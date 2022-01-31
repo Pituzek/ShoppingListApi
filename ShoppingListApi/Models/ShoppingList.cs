@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+using System.Linq;
 using System.Text.Json.Serialization;
 
 namespace ShoppingListApi
@@ -9,7 +10,15 @@ namespace ShoppingListApi
         public string ShopName { get; set; }
         public string Address { get; set; } 
         public decimal TotalPrice { get; set; }
-        public List<Item> Items { get; set; } = new List<Item>();
+        public IEnumerable<Item> Items 
+        {
+            get
+            {
+                return _items;
+            }
+        }
+
+        private List<Item> _items = new List<Item>();
 
         public decimal CalculateTotalCost()
         {
@@ -20,6 +29,19 @@ namespace ShoppingListApi
             }
 
             return totalCost;
+        }
+
+        public void Add(Item item)
+        {
+            _items.Add(item);
+        }
+
+        public void Update(ShoppingList update)
+        {
+            this._items = update.Items.ToList();
+            this.Address = update.Address;
+            this.ShopName = update.ShopName;
+            this.TotalPrice = update.TotalPrice;
         }
     }
 }

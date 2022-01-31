@@ -72,10 +72,7 @@ namespace ShoppingListApi.Services
                 throw new ArgumentException($"Shopping list by id {id} was not found");
             }
 
-            oldShoppingList.Items = shoppingList.Items;
-            oldShoppingList.Address = shoppingList.Address;
-            oldShoppingList.ShopName = shoppingList.ShopName;
-            oldShoppingList.TotalPrice = shoppingList.TotalPrice;
+            oldShoppingList.Update(shoppingList);
         }
 
         public void AddItem(int shoppingListId, Item item)
@@ -86,7 +83,7 @@ namespace ShoppingListApi.Services
                 throw new ArgumentException($"Shopping list by id {shoppingListId} was not found");
             }
 
-            shoppingList.Items.Add(item);
+            shoppingList.Add(item);
         }
     }
 }
