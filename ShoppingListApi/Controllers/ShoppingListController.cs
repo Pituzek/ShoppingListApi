@@ -44,12 +44,16 @@ namespace ShoppingListApi.Controllers
         [HttpGet("item/random")]
         public IActionResult GetRandomItem()
         {
-            var item = new Item();
-            item.Amount = _random.NextDouble() * 100;
-            item.Price = (decimal)(_random.NextDouble() * 100);
             var bytes = new byte[100];
             _random.NextBytes(bytes);
-            item.Name = Encoding.Unicode.GetString(bytes);
+            var randomName = Encoding.Unicode.GetString(bytes);
+
+            var item = new Item
+            {
+                Amount = _random.NextDouble() * 100,
+                Price = (decimal)(_random.NextDouble() * 100),
+                Name = randomName
+            };
 
             return Ok(item);
         }
