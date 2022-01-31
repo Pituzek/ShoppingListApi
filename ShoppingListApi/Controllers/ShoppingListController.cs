@@ -3,6 +3,7 @@ using Microsoft.Extensions.Logging;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Text;
 using System.Threading.Tasks;
 
 namespace ShoppingListApi.Controllers
@@ -24,6 +25,7 @@ namespace ShoppingListApi.Controllers
     public class ShoppingListController : ControllerBase
     {
         private static List<ShoppingList> _shoppingLists = new List<ShoppingList>();
+        private static Random _random = new Random();
 
         // Http post allows using a POST http verb
         // IActionResult allows different types of result to be returned.
@@ -37,6 +39,19 @@ namespace ShoppingListApi.Controllers
         {
             _shoppingLists.Add(shoppingList);
             return Created("/shoppinglist", shoppingList);
+        }
+
+        [HttpGet("item/random")]
+        public IActionResult GetRandomItem()
+        {
+            var item = new Item();
+            item.Amount = _random.NextDouble() * 100;
+            item.Price = (decimal)(_random.NextDouble() * 100);
+            var bytes = new byte[100];
+            _random.NextBytes(bytes);
+            item.Name = Encoding.Unicode.GetString(bytes);
+
+            return Ok(item);
         }
 
         // Allows using a Get http verb.
