@@ -30,20 +30,14 @@ namespace ShoppingListApi.Controllers
         [HttpGet("total")]
         public IActionResult GetTotalPrice()
         {
-            decimal totalTotalCost = 0;
+            decimal totalCost = 0;
 
             foreach (var shoppingList in _shoppingLists)
             {
-                decimal totalCost = 0;
-                foreach (var item in shoppingList.Items)
-                {
-                    totalCost += item.Price;
-                }
-
-                totalTotalCost += totalCost;
+                totalCost += shoppingList.CalculateTotalCost();
             }
 
-            return Ok(totalTotalCost);
+            return Ok(totalCost);
         }
 
         // Http post allows using a POST http verb

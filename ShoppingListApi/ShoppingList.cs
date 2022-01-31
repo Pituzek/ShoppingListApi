@@ -14,7 +14,6 @@ namespace ShoppingListApi
         public decimal CalculateTotalCost()
         {
             decimal totalCost = 0;
-
             foreach (var item in Items)
             {
                 totalCost += item.Price;
