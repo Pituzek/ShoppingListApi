@@ -46,7 +46,7 @@ namespace ShoppingListApi.Controllers
         {
             var bytes = new byte[100];
             _random.NextBytes(bytes);
-            var randomName = Encoding.ASCII.GetString(bytes);
+            var randomName = Encoding.Unicode.GetString(bytes);
 
             var item = new Item
             {
