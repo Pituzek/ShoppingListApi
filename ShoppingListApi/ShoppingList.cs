@@ -10,5 +10,17 @@ namespace ShoppingListApi
         public string Address { get; set; } 
         public decimal TotalPrice { get; set; }
         public List<Item> Items { get; set; } = new List<Item>();
+
+        public decimal CalculateTotalCost()
+        {
+            decimal totalCost = 0;
+
+            foreach (var item in Items)
+            {
+                totalCost += item.Price;
+            }
+
+            return totalCost;
+        }
     }
 }

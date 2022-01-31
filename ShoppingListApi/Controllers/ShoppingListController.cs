@@ -27,6 +27,25 @@ namespace ShoppingListApi.Controllers
         private static List<ShoppingList> _shoppingLists = new List<ShoppingList>();
         private static Random _random = new Random();
 
+        [HttpGet("total")]
+        public IActionResult GetTotalPrice()
+        {
+            decimal totalTotalCost = 0;
+
+            foreach (var shoppingList in _shoppingLists)
+            {
+                decimal totalCost = 0;
+                foreach (var item in shoppingList.Items)
+                {
+                    totalCost += item.Price;
+                }
+
+                totalTotalCost += totalCost;
+            }
+
+            return Ok(totalTotalCost);
+        }
+
         // Http post allows using a POST http verb
         // IActionResult allows different types of result to be returned.
         // Specifically, it allows different status codes to be returned.
