@@ -42,11 +42,18 @@ namespace ShoppingListApi.Controllers
         // - either 200 or 500
         // With IActionResult we can return any status code possible.
         // Usually is used to create new resources or running comlex queries.
-        [HttpPost]
+        [HttpPost("basic")]
         public IActionResult Create(ShoppingList shoppingList)
         {
             _shoppingListService.Add(shoppingList);
-            return Created("/shoppinglist", shoppingList);
+            return Created("/shoppinglist/basic", shoppingList);
+        }
+
+        [HttpPost("taxed")]
+        public IActionResult Create(TaxedShoppingList shoppingList)
+        {
+            _shoppingListService.Add(shoppingList);
+            return Created("/shoppinglist/taxed", shoppingList);
         }
 
         [HttpGet("item/random")]

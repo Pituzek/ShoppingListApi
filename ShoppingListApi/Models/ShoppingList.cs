@@ -9,7 +9,13 @@ namespace ShoppingListApi
         public int Id { get; set; }
         public string ShopName { get; set; }
         public string Address { get; set; } 
-        public decimal TotalPrice { get; set; }
+        public decimal TotalPrice
+        {
+            get
+            {
+                return CalculateTotalCost();
+            }
+        }
         public IEnumerable<Item> Items 
         {
             get
@@ -20,7 +26,7 @@ namespace ShoppingListApi
 
         private List<Item> _items = new List<Item>();
 
-        public decimal CalculateTotalCost()
+        public virtual decimal CalculateTotalCost()
         {
             decimal totalCost = 0;
             foreach (var item in Items)
@@ -41,7 +47,6 @@ namespace ShoppingListApi
             this._items = update.Items.ToList();
             this.Address = update.Address;
             this.ShopName = update.ShopName;
-            this.TotalPrice = update.TotalPrice;
         }
     }
 }
