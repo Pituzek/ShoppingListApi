@@ -13,7 +13,12 @@ namespace ShoppingListApi.Services
 
     public class ItemsGenerator : IItemsGenerator
     {
-        private static Random _random = new Random();
+        private readonly Random _random;
+
+        public ItemsGenerator()
+        {
+            _random = new Random();
+        }
 
         public Item Generate()
         {

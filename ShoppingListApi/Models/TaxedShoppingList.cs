@@ -4,20 +4,22 @@ namespace ShoppingListApi
 {
     public class TaxedShoppingList : ShoppingList
     {
-        private readonly IList<ITaxPolicy> _taxPolicies;
+        private readonly IEnumerable<ITaxPolicy> _taxPolicies;
 
         public TaxedShoppingList()
         {
-            _taxPolicies = new ITaxPolicy[]
-            {
-                new FixedTaxPolicy(1.01m),
-                new ProgressiveTaxedPolicy()
-            };
+        }
+
+        public TaxedShoppingList(IEnumerable<ITaxPolicy> taxPolicies)
+        {
+            _taxPolicies = taxPolicies;
         }
 
         public override decimal CalculateTotalCost()
         {
             var pureCost = base.CalculateTotalCost();
+            if (_taxPolicies == null) return pureCost;
+
             var actualCost = pureCost;
 
             foreach (var taxPolicy in _taxPolicies)

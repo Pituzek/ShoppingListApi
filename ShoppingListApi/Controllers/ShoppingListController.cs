@@ -25,15 +25,18 @@ namespace ShoppingListApi.Controllers
     // musi byc atrybut : [Route("api/[controller]")], jesli uzyje [Route("api/nazwa_na_sztywno_nie_z_klasy")]
     public class ShoppingListController : ControllerBase
     {
+        private readonly ITaxedShoppingListConverter _shoppingListConverter;
         private readonly IShoppingListService _shoppingListService;
         private readonly IItemsGenerator _itemsGenerator;
 
         public ShoppingListController(
             IShoppingListService shoppingListService,
-            IItemsGenerator itemsGenerator)
+            IItemsGenerator itemsGenerator,
+            ITaxedShoppingListConverter shoppingListConverter)
         {
             _shoppingListService = shoppingListService;
             _itemsGenerator = itemsGenerator;
+            _shoppingListConverter = shoppingListConverter;
         }
 
         [HttpGet("total")]
@@ -51,17 +54,18 @@ namespace ShoppingListApi.Controllers
         // With IActionResult we can return any status code possible.
         // Usually is used to create new resources or running comlex queries.
         [HttpPost("basic")]
-        public IActionResult Create(ShoppingList shoppingList)
+        public IActionResult CreateTaxed(ShoppingList shoppingList)
         {
             _shoppingListService.Add(shoppingList);
             return Created("/shoppinglist/basic", shoppingList);
         }
 
         [HttpPost("taxed")]
-        public IActionResult Create(TaxedShoppingList shoppingList)
+        public IActionResult Create(ShoppingList shoppingList)
         {
-            _shoppingListService.Add(shoppingList);
-            return Created("/shoppinglist/taxed", shoppingList);
+            var taxedShoppingList = _shoppingListConverter.Converts(shoppingList);
+            _shoppingListService.Add(taxedShoppingList);
+            return Created("/shoppinglist/taxed", taxedShoppingList);
         }
 
         [HttpGet("item/random")]
