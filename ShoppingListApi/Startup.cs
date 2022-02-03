@@ -19,8 +19,12 @@ namespace ShoppingListApi
 
         // This method gets called by the runtime. Use this method to add services to the container.
         // Register dependencies
+        // IServicesCollection is an Inversion of Control containers
+        // It inverts the place when the objects get created
+        // They get created (configured) here
         public void ConfigureServices(IServiceCollection services)
         {
+            // Composition root- a place where you register all the dependencies.
 
             services.AddControllers();
             services.AddSwaggerGen(c =>
