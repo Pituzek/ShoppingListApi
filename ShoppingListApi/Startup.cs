@@ -4,6 +4,7 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.OpenApi.Models;
+using ShoppingListApi.Bootstrap;
 using ShoppingListApi.Services;
 
 namespace ShoppingListApi
@@ -42,13 +43,8 @@ namespace ShoppingListApi
             // Add dependency of IItemsGenerator
             services.AddSingleton<IItemsGenerator, ItemsGenerator>();
 
-            services.AddSingleton<ITaxedShoppingListConverter, TaxedShoppingListConverter>();
-
-            // Add dependency of ITaxPolicy
-            services.AddSingleton<ITaxPolicy, ProgressiveTaxedPolicy>();
-
-            // way to custom create a thing, not only inject it
-            services.AddSingleton<ITaxPolicy, FixedTaxPolicy>( _ => new FixedTaxPolicy(1.01m));
+            // Setup class through extension method
+            services.AddTaxPolicies();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
