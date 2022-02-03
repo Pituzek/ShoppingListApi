@@ -25,8 +25,16 @@ namespace ShoppingListApi.Controllers
     // musi byc atrybut : [Route("api/[controller]")], jesli uzyje [Route("api/nazwa_na_sztywno_nie_z_klasy")]
     public class ShoppingListController : ControllerBase
     {
-        private static ShoppingListService _shoppingListService = new ShoppingListService();
-        private static ItemsGenerator _itemsGenerator = new ItemsGenerator();
+        private readonly IShoppingListService _shoppingListService;
+        private readonly IItemsGenerator _itemsGenerator;
+
+        public ShoppingListController(
+            IShoppingListService shoppingListService,
+            IItemsGenerator itemsGenerator)
+        {
+            _shoppingListService = shoppingListService;
+            _itemsGenerator = itemsGenerator;
+        }
 
         [HttpGet("total")]
         public IActionResult GetTotalPrice()

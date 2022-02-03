@@ -6,7 +6,12 @@ using System.Threading.Tasks;
 
 namespace ShoppingListApi.Services
 {
-    public class ItemsGenerator
+    public interface IItemsGenerator
+    {
+        Item Generate();
+    }
+
+    public class ItemsGenerator : IItemsGenerator
     {
         private static Random _random = new Random();
 
