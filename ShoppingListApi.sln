@@ -3,7 +3,9 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 16
 VisualStudioVersion = 16.0.32106.194
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ShoppingListApi", "ShoppingListApi\ShoppingListApi.csproj", "{F7E59DB6-8546-4B32-A518-B41F6E87077A}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ShoppingListApi", "ShoppingListApi\ShoppingListApi.csproj", "{F7E59DB6-8546-4B32-A518-B41F6E87077A}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ShoppingListApi.Tests", "ShoppingListApi.Tests\ShoppingListApi.Tests.csproj", "{8F976D16-C9DE-4F45-BF81-FA81CCE7D5F8}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -15,6 +17,10 @@ Global
 		{F7E59DB6-8546-4B32-A518-B41F6E87077A}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{F7E59DB6-8546-4B32-A518-B41F6E87077A}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{F7E59DB6-8546-4B32-A518-B41F6E87077A}.Release|Any CPU.Build.0 = Release|Any CPU
+		{8F976D16-C9DE-4F45-BF81-FA81CCE7D5F8}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{8F976D16-C9DE-4F45-BF81-FA81CCE7D5F8}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{8F976D16-C9DE-4F45-BF81-FA81CCE7D5F8}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{8F976D16-C9DE-4F45-BF81-FA81CCE7D5F8}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
