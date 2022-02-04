@@ -37,13 +37,33 @@ namespace ShoppingListApi.Tests
         [Fact]
         void Get_WhenExistingShoppingList_ReturnsOk()
         {
-            const int ExistingShoppingListId = 1;
-            _shoppingListService.Add(new ShoppingList() { Id = ExistingShoppingListId });
+            const int existingShoppingListId = 1;
+            _shoppingListService.Add(new ShoppingList() { Id = existingShoppingListId });
 
-            var response = _controller.Get(ExistingShoppingListId);
+            var response = _controller.Get(existingShoppingListId);
 
             Assert.IsAssignableFrom<OkObjectResult>(response);
         }
 
+        [Fact]
+        public void GetByName_WhenNonExistingName_ReturnsOk()
+        {
+            const string nonExistingShoppingListName = "This does not exist";
+
+            var response = _controller.GetByName(nonExistingShoppingListName);
+
+            Assert.IsAssignableFrom<OkObjectResult>(response);
+        }
+
+        [Theory]
+        [InlineData("Existing")]
+        [InlineData("existing")]
+        [InlineData("existIng")]
+        public void GetByName_WhenExistingName_ReturnsOk(string shopName)
+        {
+            var response = _controller.GetByName(shopName);
+
+            Assert.IsAssignableFrom<OkObjectResult>(response);
+        }
     }
 }
