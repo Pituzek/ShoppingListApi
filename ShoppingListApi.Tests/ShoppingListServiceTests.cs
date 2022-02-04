@@ -28,7 +28,6 @@ namespace ShoppingListApi.Tests
 
             service.RemoveShoppingList(existingShoppingListId);
 
-            // Verify exception is thrown
             var shoppingLists = service.Get();
             Assert.DoesNotContain(removedShoppingList, shoppingLists);
         }
