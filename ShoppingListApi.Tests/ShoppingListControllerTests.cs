@@ -59,6 +59,7 @@ namespace ShoppingListApi.Tests
         [InlineData("Existing")]
         [InlineData("existing")]
         [InlineData("existIng")]
+        [InlineData("exIstIng")]
         public void GetByName_WhenExistingName_ReturnsOk(string shopName)
         {
             var response = _controller.GetByName(shopName);
