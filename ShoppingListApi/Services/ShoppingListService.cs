@@ -19,33 +19,38 @@ namespace ShoppingListApi.Services
 
     public class ShoppingListService : IShoppingListService
     {
-        private List<ShoppingList> _shoppingLists = new List<ShoppingList>();
+        private Dictionary<int, ShoppingList> _shoppingLists = new Dictionary<int, ShoppingList>();
 
         public decimal CalculateTotalCost()
         {
-            return _shoppingLists
+            return _shoppingLists.Values
                 .Select(sl => sl.CalculateTotalCost())
                 .Sum();
         }
 
         public void Add(ShoppingList shoppingList)
         {
-             _shoppingLists.Add(shoppingList);
+             _shoppingLists.Add(shoppingList.Id, shoppingList);
         }
 
         public IEnumerable<ShoppingList> Get()
         {
-            return _shoppingLists;
+            return _shoppingLists.Values;
         }
 
         public ShoppingList FindShoppingList(int id)
         {
-            return _shoppingLists.FirstOrDefault(list => list.Id == id);
+            if (_shoppingLists.ContainsKey(id))
+            {
+                return _shoppingLists[id];
+            }
+
+            return null;
         }
 
         public IEnumerable<ShoppingList> GetByName(string name)
         {
-            return _shoppingLists.Where(list =>
+            return _shoppingLists.Values.Where(list =>
                 list.ShopName.Equals(name, StringComparison.OrdinalIgnoreCase));
         }
 
@@ -54,7 +59,7 @@ namespace ShoppingListApi.Services
             var shoppingList = FindShoppingList(id);
             if (shoppingList == null) throw new ArgumentException($"Shopping list by id {id} was not found.");
 
-            _shoppingLists.Remove(shoppingList);
+            _shoppingLists.Remove(shoppingList.Id);
         }
 
         public void UpdateShoppingListName(int id, string name)
