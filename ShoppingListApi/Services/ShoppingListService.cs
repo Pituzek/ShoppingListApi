@@ -9,7 +9,7 @@ namespace ShoppingListApi.Services
     {
          decimal CalculateTotalCost();
          void Add(ShoppingList shoppingList);
-         List<ShoppingList> Get();
+         IEnumerable<ShoppingList> Get();
          ShoppingList FindShoppingList(int id);
          void RemoveShoppingList(int id);
          void UpdateShoppingListName(int id, string name);
@@ -33,7 +33,7 @@ namespace ShoppingListApi.Services
              _shoppingLists.Add(shoppingList);
         }
 
-        public List<ShoppingList> Get()
+        public IEnumerable<ShoppingList> Get()
         {
             return _shoppingLists;
         }
