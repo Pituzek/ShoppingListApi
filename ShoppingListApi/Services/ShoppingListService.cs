@@ -43,6 +43,12 @@ namespace ShoppingListApi.Services
             return _shoppingLists.FirstOrDefault(list => list.Id == id);
         }
 
+        public IEnumerable<ShoppingList> GetByName(string name)
+        {
+            return _shoppingLists.Where(list =>
+                list.ShopName.Equals(name, StringComparison.OrdinalIgnoreCase));
+        }
+
         public void RemoveShoppingList(int id)
         {
             var shoppingList = FindShoppingList(id);
