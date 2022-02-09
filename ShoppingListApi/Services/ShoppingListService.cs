@@ -33,20 +33,6 @@ namespace ShoppingListApi.Services
              _shoppingLists.Add(shoppingList);
         }
 
-        public IEnumerable<ShoppingList> GetByName(string name)
-        {
-            var shoppingLists = new List<ShoppingList>();
-            foreach (var shoppingList in _shoppingLists)
-            {
-                if (shoppingList.ShopName.ToLower() == name.ToLower())
-                {
-                    shoppingLists.Add(shoppingList);
-                }
-            }
-
-            return shoppingLists;
-        }
-
         public List<ShoppingList> Get()
         {
             return _shoppingLists;
@@ -54,15 +40,7 @@ namespace ShoppingListApi.Services
 
         public ShoppingList FindShoppingList(int id)
         {
-            foreach (var list in _shoppingLists)
-            {
-                if (list.Id == id)
-                {
-                    return list;
-                }
-            }
-
-            return null;
+            return _shoppingLists.FirstOrDefault(list => list.Id == id);
         }
 
         public void RemoveShoppingList(int id)
