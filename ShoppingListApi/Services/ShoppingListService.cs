@@ -23,14 +23,9 @@ namespace ShoppingListApi.Services
 
         public decimal CalculateTotalCost()
         {
-            decimal totalCost = 0;
-
-            foreach (var shoppingList in _shoppingLists)
-            {
-                totalCost += shoppingList.CalculateTotalCost();
-            }
-
-            return totalCost;
+            return _shoppingLists
+                .Select(sl => sl.CalculateTotalCost())
+                .Sum();
         }
 
         public void Add(ShoppingList shoppingList)
