@@ -1,4 +1,5 @@
-﻿using System;
+﻿using ShoppingListApi.Repositories;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
@@ -20,6 +21,12 @@ namespace ShoppingListApi.Services
     public class ShoppingListService : IShoppingListService
     {
         private Dictionary<int, ShoppingList> _shoppingLists = new Dictionary<int, ShoppingList>();
+        private readonly ShoppingListRepository _repository;
+
+        public ShoppingListService(ShoppingListRepository repository)
+        {
+            _repository = repository;
+        }
 
         public decimal CalculateTotalCost()
         {
@@ -50,8 +57,9 @@ namespace ShoppingListApi.Services
 
         public IEnumerable<ShoppingList> GetByName(string name)
         {
-            return _shoppingLists.Values.Where(list =>
-                list.ShopName.Equals(name, StringComparison.OrdinalIgnoreCase));
+            //return _shoppingLists.Values.Where(list =>
+            //    list.ShopName.Equals(name, StringComparison.OrdinalIgnoreCase));
+            return _repository.GetByName(name);
         }
 
         public void RemoveShoppingList(int id)

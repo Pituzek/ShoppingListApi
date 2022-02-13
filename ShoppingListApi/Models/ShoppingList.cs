@@ -1,7 +1,8 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
 using System.Text.Json.Serialization;
-namespace ShoppingListApi
+
+namespace ShoppingListApi.Models
 {
     public class ShoppingList
     {

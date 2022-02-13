@@ -5,7 +5,7 @@ VisualStudioVersion = 16.0.32106.194
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ShoppingListApi", "ShoppingListApi\ShoppingListApi.csproj", "{F7E59DB6-8546-4B32-A518-B41F6E87077A}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ShoppingListApi.Tests", "ShoppingListApi.Tests\ShoppingListApi.Tests.csproj", "{8F976D16-C9DE-4F45-BF81-FA81CCE7D5F8}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ShoppingListApi.Tests", "ShoppingListApi.Tests\ShoppingListApi.Tests.csproj", "{8F976D16-C9DE-4F45-BF81-FA81CCE7D5F8}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
