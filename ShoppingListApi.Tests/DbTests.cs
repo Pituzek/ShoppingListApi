@@ -1,8 +1,9 @@
 ﻿using System.Text;
-using Microsoft.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore.InMemory;
 using ShoppingListApi.Db;
 using System;
 using Xunit;
+using Microsoft.EntityFrameworkCore;
 
 namespace ShoppingListApi.Tests
 {
