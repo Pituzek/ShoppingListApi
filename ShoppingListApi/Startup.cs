@@ -5,6 +5,7 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.OpenApi.Models;
 using ShoppingListApi.Bootstrap;
+using ShoppingListApi.Db;
 using ShoppingListApi.Services;
 
 namespace ShoppingListApi
@@ -45,6 +46,9 @@ namespace ShoppingListApi
 
             // Setup class through extension method
             services.AddTaxPolicies();
+
+            // Hook up db context within app
+            services.AddDbContext<ShoppingContext>();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
