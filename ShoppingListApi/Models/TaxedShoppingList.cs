@@ -4,7 +4,7 @@ namespace ShoppingListApi.Models
 {
     public class TaxedShoppingList : ShoppingList
     {
-        private readonly IEnumerable<ITaxPolicy> _taxPolicies;
+        public IEnumerable<ITaxPolicy> TaxPolicies { get; }
 
         public TaxedShoppingList()
         {
@@ -12,17 +12,17 @@ namespace ShoppingListApi.Models
 
         public TaxedShoppingList(IEnumerable<ITaxPolicy> taxPolicies)
         {
-            _taxPolicies = taxPolicies;
+            TaxPolicies = taxPolicies;
         }
 
         public override decimal CalculateTotalCost()
         {
             var pureCost = base.CalculateTotalCost();
-            if (_taxPolicies == null) return pureCost;
+            if (TaxPolicies == null) return pureCost;
 
             var actualCost = pureCost;
 
-            foreach (var taxPolicy in _taxPolicies)
+            foreach (var taxPolicy in TaxPolicies)
             {
                 actualCost = taxPolicy.Apply(actualCost);
             }

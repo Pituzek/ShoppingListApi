@@ -1,16 +1,27 @@
-﻿using ShoppingListApi.Services;
+﻿using ShoppingListApi.Models;
+using ShoppingListApi.Repositories;
+using ShoppingListApi.Services;
 using System;
 using Xunit;
 
 namespace ShoppingListApi.Tests
 {
-    public class ShoppingListServiceTests
+    public abstract class ShoppingListServiceTests : DbTests
     {
+        private readonly ShoppingListRepository _shoppingListRepository;
+        private readonly ItemsRepository _itemsRepository;
+
+        public ShoppingListServiceTests()
+        {
+            _shoppingListRepository = new ShoppingListRepository(Context);
+            _itemsRepository = new ItemsRepository(Context);
+        }
+
         [Fact]
-        public void RemoveShoppinhList_WhenNonExistingShoppingListId_ThrowsArgumentException()
+        public void RemoveShoppingList_WhenNonExistingShoppingListId_ThrowsArgumentException()
         {
             const int nonExistingShoppingListId = 0;
-            var service = new ShoppingListService();
+            var service = new ShoppingListService(_shoppingListRepository, _itemsRepository);
 
             Action removeNonExistingShoppingList = () => service.RemoveShoppingList(nonExistingShoppingListId);
 
@@ -22,8 +33,8 @@ namespace ShoppingListApi.Tests
         public void RemoveShoppinhList_WhenShoppingListExists_RemovesIt()
         {
             const int existingShoppingListId = 1;
-            var service = new ShoppingListService();
-            var removedShoppingList = new ShoppingList() { Id = existingShoppingListId };
+            var service = new ShoppingListService(_shoppingListRepository, _itemsRepository);
+            var removedShoppingList = new ShoppingList { Id = existingShoppingListId };
             service.Add(removedShoppingList);
 
             service.RemoveShoppingList(existingShoppingListId);

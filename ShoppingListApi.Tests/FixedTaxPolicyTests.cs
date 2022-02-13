@@ -1,3 +1,4 @@
+using ShoppingListApi.Models;
 using System;
 using Xunit;
 

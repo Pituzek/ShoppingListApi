@@ -1,4 +1,5 @@
-﻿using ShoppingListApi.Repositories;
+﻿using ShoppingListApi.Models;
+using ShoppingListApi.Repositories;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -20,88 +21,62 @@ namespace ShoppingListApi.Services
 
     public class ShoppingListService : IShoppingListService
     {
-        private Dictionary<int, ShoppingList> _shoppingLists = new Dictionary<int, ShoppingList>();
-        private readonly ShoppingListRepository _repository;
+        private readonly IShoppingListRepository _shoppingListRepository;
+        private readonly IItemsRepository _itemsRepository;
 
-        public ShoppingListService(ShoppingListRepository repository)
+        public ShoppingListService(IShoppingListRepository shoppingListRepository, IItemsRepository itemsRepository)
         {
-            _repository = repository;
+            _shoppingListRepository = shoppingListRepository;
+            _itemsRepository = itemsRepository;
         }
 
         public decimal CalculateTotalCost()
         {
-            return _shoppingLists.Values
+            return _shoppingListRepository.Get()
                 .Select(sl => sl.CalculateTotalCost())
                 .Sum();
         }
 
         public void Add(ShoppingList shoppingList)
         {
-             _shoppingLists.Add(shoppingList.Id, shoppingList);
+             _shoppingListRepository.Add(shoppingList);
         }
 
         public IEnumerable<ShoppingList> Get()
         {
-            return _shoppingLists.Values;
+            return _shoppingListRepository.Get();
         }
 
         public ShoppingList FindShoppingList(int id)
         {
-            if (_shoppingLists.ContainsKey(id))
-            {
-                return _shoppingLists[id];
-            }
-
-            return null;
+            return _shoppingListRepository.Get(id);
         }
 
         public IEnumerable<ShoppingList> GetByName(string name)
         {
             //return _shoppingLists.Values.Where(list =>
             //    list.ShopName.Equals(name, StringComparison.OrdinalIgnoreCase));
-            return _repository.GetByName(name);
+            return _shoppingListRepository.GetByName(name);
         }
 
         public void RemoveShoppingList(int id)
         {
-            var shoppingList = FindShoppingList(id);
-            if (shoppingList == null) throw new ArgumentException($"Shopping list by id {id} was not found.");
-
-            _shoppingLists.Remove(shoppingList.Id);
+            _shoppingListRepository.Delete(id);
         }
 
         public void UpdateShoppingListName(int id, string name)
         {
-            var oldShoppingList = FindShoppingList(id);
-            if (oldShoppingList == null)
-            {
-                throw new ArgumentException($"Shopping list by id {id} was not found");
-            }
-
-            oldShoppingList.ShopName = name;
+            _shoppingListRepository.Update(id, name);       
         }
 
-        public void UpdateShoppingList(int id, ShoppingList shoppingList)
+        public void UpdateShoppingList(int id, ShoppingList update)
         {
-            var oldShoppingList = FindShoppingList(id);
-
-            if (shoppingList == null)
-            {
-                throw new ArgumentException($"Shopping list by id {id} was not found");
-            }
-
-            oldShoppingList.Update(shoppingList);
+            _shoppingListRepository.Update(id, update);
         }
 
         public void AddItem(int shoppingListId, Item item)
         {
-            var shoppingList = FindShoppingList(shoppingListId);
-            if (shoppingList == null)
-            {
-                throw new ArgumentException($"Shopping list by id {shoppingListId} was not found");
-            }
-
-            shoppingList.Add(item);
+            _itemsRepository.Create(shoppingListId, item);
         }
     }
 }

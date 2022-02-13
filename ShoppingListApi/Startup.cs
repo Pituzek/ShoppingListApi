@@ -7,6 +7,8 @@ using Microsoft.OpenApi.Models;
 using ShoppingListApi.Bootstrap;
 using ShoppingListApi.Db;
 using ShoppingListApi.Services;
+using ShoppingListApi.Repositories;
+using Microsoft.EntityFrameworkCore;
 
 namespace ShoppingListApi
 {
@@ -38,17 +40,24 @@ namespace ShoppingListApi
             // add.Transient- gets created for every time reference
             // add.Scoped- gets created per request
             // add.Singleton- created one
-            // Add dependency of IShoppingListService
-            services.AddSingleton<IShoppingListService, ShoppingListService>();
+            // Add dependency of IShoppingListService,
+            // change to AddTransient from AddSingleton because we dont need to do this statically after implementing DB
+            services.AddTransient<IShoppingListService, ShoppingListService>();
 
             // Add dependency of IItemsGenerator
-            services.AddSingleton<IItemsGenerator, ItemsGenerator>();
+            services.AddTransient<IItemsGenerator, ItemsGenerator>();
+
+            services.AddTransient<IShoppingListRepository, ShoppingListRepository>();
+            services.AddTransient<IItemsRepository, ItemsRepository>();
 
             // Setup class through extension method
             services.AddTaxPolicies();
 
             // Hook up db context within app
-            services.AddDbContext<ShoppingContext>();
+            services.AddDbContext<ShoppingContext>( builder =>
+            {
+                builder.UseSqlite(@"DataSource=ShoppingList.db;");
+            });
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.

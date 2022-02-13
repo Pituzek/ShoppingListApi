@@ -1,5 +1,6 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
+using ShoppingListApi.Models;
 using ShoppingListApi.Services;
 using System;
 using System.Collections.Generic;

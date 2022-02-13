@@ -1,11 +1,24 @@
 ﻿using System.Collections.Generic;
 using Db = ShoppingListApi.Db;
-using System.Linq;
 using Domain = ShoppingListApi.Models;
+using System.Linq;
+using ShoppingListApi.Mappers;
+using Microsoft.EntityFrameworkCore;
 
 namespace ShoppingListApi.Repositories
 {
-    public class ShoppingListRepository
+    public interface IShoppingListRepository
+    {
+        void Add(Domain.ShoppingList shoppingList);
+        IEnumerable<Domain.ShoppingList> GetByName(string name);
+        IEnumerable<Domain.ShoppingList> Get();
+        Domain.ShoppingList Get(int id);
+        void Delete(int id);
+        void Update(int id, string name);
+        void Update(int id, Domain.ShoppingList shoppingList);
+    }
+
+    public class ShoppingListRepository : IShoppingListRepository
     {
         private Db.ShoppingContext _context;
 
@@ -14,48 +27,60 @@ namespace ShoppingListApi.Repositories
             _context = context;
         }
 
-        public Domain.ShoppingList GetByName(string name)
+        public IEnumerable<Domain.ShoppingList> GetByName(string name)
         {
             return _context
                 .ShoppingLists
-                .FirstOrDefault(list => list.ShopName == name);
-
-
+                .Include(sl => sl.Items)
+                .Where(list => list.ShopName == name)
+                .Select(list => list.Map());
         }
 
-        public void CreateTaxed(Domain.ShoppingList shoppingList)
+        public void Add(Domain.ShoppingList shoppingList)
         {
-
-        }
-
-        public void Create(Domain.ShoppingList shoppingList)
-        {
-
+            var dbShoppingList = shoppingList.Map();
+            _context.Add(dbShoppingList);
+            _context.SaveChanges();
         }
 
         public IEnumerable<Domain.ShoppingList> Get()
         {
-            return null;
+            return _context.ShoppingLists
+                .Include(sl => sl.Items)
+                .ToList()
+                .Select(sl => sl.Map());
         }
 
         public Domain.ShoppingList Get(int id)
         {
-            return null;
+            return _context.ShoppingLists
+                .Include(sl => sl.Items)
+                .FirstOrDefault(sl => sl.Id == id)
+                .Map();
         }
 
-        public void UpdateShoppingList(int id, Domain.ShoppingList shoppingList)
+        public void Update(int id, Domain.ShoppingList shoppingList)
         {
+            var shoppingListInDb = _context.ShoppingLists.Find(id);
 
+            shoppingListInDb.ShopName = shoppingList.ShopName;
+            shoppingListInDb.Address = shoppingList.Address;
+
+            _context.SaveChanges();
         }
 
-        public void UpdateShoppingListName(int id, Domain.ShoppingList shoppingList)
+        public void Update(int id, string name)
         {
-
+            var shoppingList = _context.ShoppingLists.Find(id);
+            shoppingList.ShopName = name;
+            _context.SaveChanges();
         }
 
         public void Delete(int id)
         {
-
+            var dbShoppingList = _context.ShoppingLists.Find(id);
+            _context.Remove(dbShoppingList);
+            _context.SaveChanges();
         }
     }
 }
