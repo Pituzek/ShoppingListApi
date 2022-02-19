@@ -30,7 +30,7 @@ namespace ShoppingListApi.Tests
         }
 
         [Fact]
-        public void RemoveShoppinhList_WhenShoppingListExists_RemovesIt()
+        public void RemoveShoppingList_WhenShoppingListExists_RemovesIt()
         {
             const int existingShoppingListId = 1;
             var service = new ShoppingListService(_shoppingListRepository, _itemsRepository);
