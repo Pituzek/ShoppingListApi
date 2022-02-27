@@ -10,7 +10,7 @@ namespace ShoppingListApi
         public int Id { get; set; }
         public string Name { get; set; }
         public int Age { get; set; }
-        public Pet[] Pets { get; set; }
+        public List<Pet> Pets { get; set; } = new List<Pet>();
         public int SpouseID { get; set; }
     }
 }
