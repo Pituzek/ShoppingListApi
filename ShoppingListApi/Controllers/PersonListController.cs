@@ -35,7 +35,7 @@ namespace ShoppingListApi.Controllers
             var shoppingList = FindPersonList(personListId);
             if (shoppingList == null)
             {
-                return NotFound($"Shopping list by id {personListId} was not found");
+                return NotFound($"People list by id {personListId} was not found");
             }
 
             shoppingList.Person.Add(person);
@@ -50,18 +50,121 @@ namespace ShoppingListApi.Controllers
             var oldPersonList = FindPersonList(personListId);
             if (oldPersonList == null)
             {
-                return NotFound($"Shopping list by id {personListId} was not found");
+                return NotFound($"People list by id {personListId} was not found");
             }
 
             var oldPerson = FindPerson(personId, oldPersonList);
             if (oldPerson == null)
             {
-                return NotFound($"Shopping list by id {personId} was not found");
+                return NotFound($"Person of id {personId} was not found");
             }
 
             oldPerson.Pets.Add(pet);
             
             return Ok(oldPersonList);
+        }
+
+        // Remove Person from a list
+        [HttpDelete("{personListId}/{personId}")]
+        public IActionResult DeletePersonFromList(int personListId, int personId)
+        {
+            var oldPersonList = FindPersonList(personListId);
+            if (oldPersonList == null)
+            {
+                return NotFound($"People list by id {personListId} was not found");
+            }
+
+            var oldPerson = FindPerson(personId, oldPersonList);
+            if (oldPerson == null)
+            {
+                return NotFound($"Person of id {personId} was not found");
+            }
+
+            oldPersonList.Person.Remove(oldPerson);
+            return Ok(oldPersonList);
+        }
+
+        // Remove Pet from existing Person
+        [HttpDelete("{personListId}/{personId}/{petID}")]
+        public IActionResult DeletePersonPetFromList(int personListId, int personId, int petId)
+        {
+            var oldPersonList = FindPersonList(personListId);
+            if (oldPersonList == null)
+            {
+                return NotFound($"People list by id {personListId} was not found");
+            }
+
+            var oldPerson = FindPerson(personId, oldPersonList);
+            if (oldPerson == null)
+            {
+                return NotFound($"Person of id {personId} was not found");
+            }
+
+            var oldPet = FindPet(petId, oldPerson);
+            if (oldPet == null)
+            {
+                return NotFound($"Pet of id {petId} was not found");
+            }
+
+            oldPerson.Pets.Remove(oldPet);
+            return Ok(oldPersonList);
+        }
+
+        // update existing person data
+        [HttpPatch("updatePersonData/{personListId}/{personId}")]
+        public IActionResult UpdateExistingPersonData(int personListId, int personId, Person person)
+        {
+            var oldPersonList = FindPersonList(personListId);
+            if (oldPersonList == null)
+            {
+                return NotFound($"People list by id {personListId} was not found");
+            }
+
+            var oldPerson = FindPerson(personId, oldPersonList);
+            if (oldPerson == null)
+            {
+                return NotFound($"Person of id {personId} was not found");
+            }
+
+            oldPerson.Name = person.Name;
+            oldPerson.Age = person.Age;
+            if (person.Pets.Count !=0) oldPerson.Pets = person.Pets; // do edycji danych zwierzecia, stworzylbym osobna funkcje
+            oldPerson.SpouseID = person.SpouseID;
+
+            return Ok(oldPersonList);
+        }
+
+        // marry two people
+        [HttpPatch("{personListId}/merryTwoPeople/{idOfFirstPerson}/{idOfSecondPerson}")]
+        public IActionResult MerryTwoPeople(int personListId, int idOfFirstPerson, int idOfSecondPerson)
+        {
+            var oldPersonList = FindPersonList(personListId);
+            if (oldPersonList == null)
+            {
+                return NotFound($"People list by id {personListId} was not found");
+            }
+
+            var firstPerson = FindPerson(idOfFirstPerson, oldPersonList);
+            if (firstPerson == null)
+            {
+                return NotFound($"Person of id {idOfFirstPerson} was not found");
+            }
+
+            var secondPerson = FindPerson(idOfSecondPerson, oldPersonList);
+            if (firstPerson == null)
+            {
+                return NotFound($"Person of id {idOfSecondPerson} was not found");
+            }
+
+            Marry(firstPerson, secondPerson);
+
+            return Ok(oldPersonList);
+        }
+
+        private static void Marry(Person firstPerson, Person secondPerson)
+        {
+            firstPerson.SpouseID = secondPerson.Id;
+            secondPerson.SpouseID = firstPerson.Id;
         }
 
         private PersonList FindPersonList(int id)
@@ -73,30 +176,31 @@ namespace ShoppingListApi.Controllers
                     return list;
                 }
             }
-
             return null;
         }
 
         private Person FindPerson(int id, PersonList oldPersonList)
         {
-            //foreach (var person in oldPersonList)
-            //{
-            //    if (person. == id)
-            //    {
-            //        return person;
-            //    }
-            //}
-
-            for (int i = 0; i < _personList.Count; i++)
+            foreach (Person person in oldPersonList.Person)
             {
-                if (oldPersonList.Person[i].Id == id)
+                if (person.Id == id)
                 {
-                    return oldPersonList.Person[i];
+                    return person;
                 }
             }
-
             return null;
         }
 
+        private Pet FindPet(int id, Person person)
+        {
+            foreach(Pet pet in person.Pets)
+            {
+                if (pet.Id == id)
+                {
+                    return pet;
+                }
+            }
+            return null;
+        }
     }
 }
