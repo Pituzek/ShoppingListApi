@@ -6,16 +6,16 @@ using ElectricityProviderApi.Models;
 
 namespace ElectricityProviderApi.Services
 {
-    public interface IProvider
+    public interface IElectricityProvider
     {
         void Subscribe(PowerPlant plant); //- subscribes to a single power plant.If powerplant is already subscribed, throws an exception.
         void Unsubscribe(PowerPlant plant); //- unsubscribes from a subscribed power plant. If no powerplant is subscribed- does nothing.
         decimal CalculatePrice(Address address); //- use some arbitrary formula to calculate the price the provider will charge for elecrticity.Location should be a factor.
     }
 
-    public class ElectricityProvider : IProvider
+    public class ElectricityProvider : IElectricityProvider
     {
-        private PowerPlant _powerProvider { get; set; }
+        private PowerPlant _powerProvider { get; set; } //= new PowerPlant();
         public string? Name { get; set; }
 
         // im dalej od lokalizacji danej elektrowni, tym wiekszy koszt energii

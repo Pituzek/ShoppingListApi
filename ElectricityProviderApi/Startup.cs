@@ -34,7 +34,8 @@ namespace ElectricityProviderApi
                 c.SwaggerDoc("v1", new OpenApiInfo { Title = "ElectricityProviderApi", Version = "v1" });
             });
 
-            services.AddSingleton<IProvider, ElectricityProvider>();
+            services.AddSingleton<IElectricityProvider, ElectricityProvider>();
+            services.AddSingleton<IElectricProviderPicker, ElectricProviderPicker>();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
