@@ -1,10 +1,6 @@
 ﻿using ElectricityProviderApi.Models;
 using ElectricityProviderApi.Services;
 using Microsoft.AspNetCore.Mvc;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
 
 namespace ElectricityProviderApi.Controllers
 {
@@ -12,41 +8,78 @@ namespace ElectricityProviderApi.Controllers
     [Route("api/[controller]")]
     public class ElectricityProviderController : ControllerBase
     {
-        private readonly IElectricityProvider _iElectricityProvider;
-        private readonly IElectricProviderPicker _iElectricProviderPicker;
+        private readonly IElectricityProvider _electricityProvider;
+        private readonly IElectricProviderPicker _electricProviderPicker;
 
         public ElectricityProviderController(
-            IElectricityProvider iElectricityProvider,
-            IElectricProviderPicker iElectricProviderPicker)
+            IElectricityProvider electricityProvider,
+            IElectricProviderPicker electricProviderPicker)
         {
-            _iElectricityProvider = iElectricityProvider;
-            _iElectricProviderPicker = iElectricProviderPicker;
+            _electricityProvider = electricityProvider;
+            _electricProviderPicker = electricProviderPicker;
         }
 
-        // Have a controller endpoint to get the name and price of the best ElectricityProvider name and price.
-
-        // Create power plants
-        [HttpPost("powerplant")]
-        public IActionResult CreatePowerProvider(PowerPlant powerPlant)
+        /// <summary>
+        /// Create Electricity provider
+        /// </summary>
+        /// <param name="electricityProvider"></param>
+        /// <returns></returns>
+        [HttpPost("electricprovider")]
+        public IActionResult CreateElectricityProvider(ElectricityProvider electricityProvider)
         {
-            _iElectricityProvider.Subscribe(powerPlant);
-            return Created("/ElectricityProviderApi/powerplant", powerPlant);
+            _electricProviderPicker.add(electricityProvider);
+            return Created("/electricprovider", _electricProviderPicker);
         }
 
-        [HttpPut("/addProviderToList")]
-        public IActionResult AddExistingPowerProviderToList(ElectricityProvider electricityProvider)
+        /// <summary>
+        /// Subscribe power plant to existing Electricity provider
+        /// </summary>
+        /// <param name="providerName"></param>
+        /// <param name="powerPlant"></param>
+        /// <returns></returns>
+        [HttpPut("addpowerplant/electricprovider/{providername}")]
+        public IActionResult SubscribePowerPlant(string providerName, PowerPlant powerPlant)
         {
-            _iElectricProviderPicker.add(electricityProvider);
+            var selectedProvider = _electricProviderPicker.FindByName(providerName) ?? throw new System.Exception("Didn't find existing provider with this name");
+            selectedProvider?.Subscribe(powerPlant);
             return Ok();
         }
 
-        [HttpGet]
-        public IActionResult Get()
+        /// <summary>
+        /// Unsubscribe power plant from existing electricity provider
+        /// </summary>
+        /// <param name="providerName"></param>
+        /// <param name="powerPlant"></param>
+        /// <returns></returns>
+        [HttpDelete("removepowerplant/electricprovider/{providername}")]
+        public IActionResult RemovePowerPlant(string providerName, PowerPlant powerPlant)
         {
-            var powerPlantLists = _iElectricProviderPicker.Get();
-            return Ok(powerPlantLists);
+            var selectedProvider = _electricProviderPicker.FindByName(providerName) ?? throw new System.Exception("Didn't find existing provider with this name");
+            selectedProvider?.Unsubscribe(powerPlant);
+            return Ok();
         }
 
+        /// <summary>
+        /// Get all electricity providers
+        /// </summary>
+        /// <returns></returns>
+        [HttpGet]
+        public IActionResult GetAllElectricProviders()
+        {
+            var electricityProviders = _electricProviderPicker.Get();
+            return Ok(electricityProviders);
+        }
 
+        /// <summary>
+        /// Find cheapest electricity provider, based on customer location
+        /// </summary>
+        /// <param name="address"></param>
+        /// <returns></returns>
+        [HttpGet("findcheapest")]
+        public IActionResult FindCheapestElectricityProvider(Address address)
+        {
+            var cheapest = _electricProviderPicker.FindCheapest(address);
+            return Ok(cheapest);
+        }
     }
 }

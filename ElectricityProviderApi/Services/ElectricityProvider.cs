@@ -1,62 +1,96 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Threading.Tasks;
 using ElectricityProviderApi.Models;
 
 namespace ElectricityProviderApi.Services
 {
     public interface IElectricityProvider
     {
-        void Subscribe(PowerPlant plant); //- subscribes to a single power plant.If powerplant is already subscribed, throws an exception.
-        void Unsubscribe(PowerPlant plant); //- unsubscribes from a subscribed power plant. If no powerplant is subscribed- does nothing.
-        decimal CalculatePrice(Address address); //- use some arbitrary formula to calculate the price the provider will charge for elecrticity.Location should be a factor.
+        void Subscribe(PowerPlant plant);
+        void Unsubscribe(PowerPlant plant);
+        decimal CalculatePrice(Address address);
     }
 
     public class ElectricityProvider : IElectricityProvider
     {
-        private PowerPlant _powerProvider { get; set; } //= new PowerPlant();
-        public string? Name { get; set; }
+        public string Name { get; set; }
+        public List<PowerPlant> _powerPlantList { get; } = new List<PowerPlant>();
 
-        // im dalej od lokalizacji danej elektrowni, tym wiekszy koszt energii
-        // dodac metode obliczajaca odleglosc danego dostawcy, od danego adresu klienta, i na tej podstawie obliczac cene energii
+        /// <summary>
+        /// Calculate cost based on distance between provider location, and customer address
+        /// </summary>
+        /// <param name="address"></param>
+        /// <returns></returns>
         public decimal CalculatePrice(Address address)
         {
-            decimal distProviderToReceiver = CalculateDistance(address.Location.X, address.Location.Y, address.Location.Z);
+            PowerPlant closestPowerPlant = default;
+            decimal closestDistance = decimal.MaxValue;
+            decimal distProviderToReceiver = -1;
 
-            if (distProviderToReceiver > 50 && distProviderToReceiver < 100) return _powerProvider.ElectricityPrice * 1.1m;
-            if (distProviderToReceiver >= 100) return _powerProvider.ElectricityPrice * 1.5m;
+            foreach (var powerPlant in _powerPlantList)
+            {
+                var tmpDistance = CalculateDistance(address, powerPlant.Location);
+                if (tmpDistance < closestDistance)
+                {
+                    closestDistance = tmpDistance;
+                    closestPowerPlant = powerPlant;
+                    distProviderToReceiver = closestDistance;
+                }
+            }
 
-            return _powerProvider.ElectricityPrice;
+            if (distProviderToReceiver > 50 && distProviderToReceiver < 100) return closestPowerPlant.ElectricityPrice * 1.1m;
+            if (distProviderToReceiver >= 100) return closestPowerPlant.ElectricityPrice * 1.5m;
+
+            return closestPowerPlant.ElectricityPrice;
         }
 
+        /// <summary>
+        /// Add new power plant to this provider (single power plant, can be added only once).
+        /// </summary>
+        /// <param name="plant"></param>
         public void Subscribe(PowerPlant plant)
         {
-            if (this.Name != null)
+            var ok = _powerPlantList.Any(p => p.Name == plant.Name);
+            if (ok)
             {
-                throw new ArgumentException("Another plant is already subscribed to this provider.");
+                throw new Exception($"This power plant is already subscribed: {plant.ToString()}");
             }
-
-            this.Name = plant.Name;
-            this._powerProvider = plant;
+            else
+            {
+                this._powerPlantList.Add(plant);
+            }
         }
 
+        /// <summary>
+        /// Remove power plant from this provider
+        /// </summary>
+        /// <param name="plant"></param>
         public void Unsubscribe(PowerPlant plant)
         {
-            if (this.Name == plant.Name)
+            foreach (var subscribedPlant in _powerPlantList)
             {
-                this.Name = null;
-                this._powerProvider = null;
+                if (subscribedPlant.Name == plant.Name)
+                {
+                    this._powerPlantList?.Remove(subscribedPlant);
+                    break;
+                }
             }
         }
 
-        private decimal CalculateDistance(int addressX, int addressY, int addressZ)
+        /// <summary>
+        /// Calculate distance between two points
+        /// </summary>
+        /// <param name="address"></param>
+        /// <param name="powerPlantLocation"></param>
+        /// <returns></returns>
+        private decimal CalculateDistance(Address address, Location powerPlantLocation)
         {
             double totalDistance = -1;
-            totalDistance = Math.Sqrt( 
-                Math.Pow(addressX - _powerProvider.Location.X, 2) +
-                Math.Pow(addressY - _powerProvider.Location.Y, 2) +
-                Math.Pow(addressZ - _powerProvider.Location.Z, 2)
+            totalDistance = Math.Sqrt(
+                Math.Pow(address.Location.X - powerPlantLocation.X, 2) +
+                Math.Pow(address.Location.Y - powerPlantLocation.Y, 2) +
+                Math.Pow(address.Location.Z - powerPlantLocation.Z, 2)
                 );
 
             return (decimal)totalDistance;

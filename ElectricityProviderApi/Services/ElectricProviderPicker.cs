@@ -1,8 +1,5 @@
 ﻿using ElectricityProviderApi.Models;
-using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
 
 namespace ElectricityProviderApi.Services
 {
@@ -11,6 +8,7 @@ namespace ElectricityProviderApi.Services
         void add(ElectricityProvider electricityProvider);
         ElectricityProvider FindCheapest(Address address);
         List<ElectricityProvider> Get();
+        ElectricityProvider FindByName(string name);
     }
 
     public class ElectricProviderPicker : IElectricProviderPicker
@@ -43,6 +41,16 @@ namespace ElectricityProviderApi.Services
         public List<ElectricityProvider> Get()
         {
             return _electricityProvidersList;
+        }
+
+        public ElectricityProvider FindByName(string name)
+        {
+            foreach (var provider in _electricityProvidersList)
+            {
+                if (provider.Name.ToLower() == name.ToLower()) return provider;
+            }
+
+            return null;
         }
     }
 }
