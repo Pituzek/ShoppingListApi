@@ -7,6 +7,8 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ShoppingListApi", "Shopping
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ElectricityProviderApi", "ElectricityProviderApi\ElectricityProviderApi.csproj", "{1AA66DCC-7145-4A96-9840-6BA57B34DD97}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ElectricityProvider.Tests", "ElectricityProvider.Tests\ElectricityProvider.Tests.csproj", "{63AA5A00-9347-45C9-8325-A584389505DD}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -21,6 +23,10 @@ Global
 		{1AA66DCC-7145-4A96-9840-6BA57B34DD97}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{1AA66DCC-7145-4A96-9840-6BA57B34DD97}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{1AA66DCC-7145-4A96-9840-6BA57B34DD97}.Release|Any CPU.Build.0 = Release|Any CPU
+		{63AA5A00-9347-45C9-8325-A584389505DD}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{63AA5A00-9347-45C9-8325-A584389505DD}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{63AA5A00-9347-45C9-8325-A584389505DD}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{63AA5A00-9347-45C9-8325-A584389505DD}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
