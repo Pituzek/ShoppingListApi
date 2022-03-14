@@ -20,12 +20,12 @@ namespace ElectricityProvider.Tests
             providerPicker.add(firstProvider);
             providerPicker.add(secondProvider);
 
-            //List<ElectricityProviderApi.Services.ElectricityProvider> expected
-             //   = new List<ElectricityProviderApi.Services.ElectricityProvider>() {firstProvider, secondProvider }; 
+            List<ElectricityProviderApi.Services.ElectricityProvider> expected
+                 = new List<ElectricityProviderApi.Services.ElectricityProvider>() {firstProvider, secondProvider}; 
 
             var collection = providerPicker.Get();
 
-            Assert.Contains(firstProvider, collection);
+            Assert.Equal(expected, collection);
         }
 
         [Theory]
