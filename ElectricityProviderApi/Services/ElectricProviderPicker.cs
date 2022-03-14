@@ -47,7 +47,7 @@ namespace ElectricityProviderApi.Services
         {
             foreach (var provider in _electricityProvidersList)
             {
-                if (provider.Name.ToLower() == name.ToLower()) return provider;
+                if (provider.Name.ToLower() == name.ToLower().Trim()) return provider;
             }
 
             return null;
