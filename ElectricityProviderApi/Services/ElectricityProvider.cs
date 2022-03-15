@@ -19,6 +19,7 @@ namespace ElectricityProviderApi.Services
 
         /// <summary>
         /// Calculate cost based on distance between provider location, and customer address
+        /// Closest power plant, can provide best prices for electricity
         /// </summary>
         /// <param name="address"></param>
         /// <returns></returns>
