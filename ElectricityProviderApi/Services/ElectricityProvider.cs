@@ -10,6 +10,7 @@ namespace ElectricityProviderApi.Services
         void Subscribe(PowerPlant plant);
         void Unsubscribe(PowerPlant plant);
         decimal CalculatePrice(Address address);
+        string GetProviderName();
     }
 
     public class ElectricityProvider : IElectricityProvider
@@ -44,6 +45,15 @@ namespace ElectricityProviderApi.Services
             if (distProviderToReceiver >= 100) return closestPowerPlant.ElectricityPrice * 1.5m;
 
             return closestPowerPlant.ElectricityPrice;
+        }
+
+        /// <summary>
+        /// To get provider name from controller tests
+        /// </summary>
+        /// <returns></returns>
+        public string GetProviderName()
+        {
+            return this.Name;
         }
 
         /// <summary>

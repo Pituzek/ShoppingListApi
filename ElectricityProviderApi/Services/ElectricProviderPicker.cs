@@ -27,6 +27,8 @@ namespace ElectricityProviderApi.Services
 
             foreach (var provider in _electricityProvidersList)
             {
+                if (provider._powerPlantList.Count == 0) continue;
+
                 decimal tmp = provider.CalculatePrice(address);
                 if (tmp < max)
                 {

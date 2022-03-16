@@ -55,6 +55,7 @@ namespace ElectricityProvider.Tests
         }
 
         // not recommended to test private methods, because you test them along with public ones
+        // and reflection takes resources
         [Theory]
         [MemberData(nameof(LocationList))]
         public void CalculateDistance_ReturnsCorrectDistance(Location destination, Address currentPos, decimal expected)

@@ -40,7 +40,7 @@ namespace ElectricityProviderApi.Controllers
         [HttpPut("addpowerplant/electricprovider/{providername}")]
         public IActionResult SubscribePowerPlant(string providerName, PowerPlant powerPlant)
         {
-            var selectedProvider = _electricProviderPicker.FindByName(providerName) ?? throw new System.Exception("Didn't find existing provider with this name");
+            var selectedProvider = _electricProviderPicker.FindByName(providerName) ?? throw new System.Exception($"Didn't find existing provider with this name: {providerName}");
             selectedProvider?.Subscribe(powerPlant);
             return Ok();
         }
@@ -54,7 +54,7 @@ namespace ElectricityProviderApi.Controllers
         [HttpDelete("removepowerplant/electricprovider/{providername}")]
         public IActionResult RemovePowerPlant(string providerName, PowerPlant powerPlant)
         {
-            var selectedProvider = _electricProviderPicker.FindByName(providerName) ?? throw new System.Exception("Didn't find existing provider with this name");
+            var selectedProvider = _electricProviderPicker.FindByName(providerName) ?? throw new System.Exception($"Didn't find existing provider with this name: {providerName}");
             selectedProvider?.Unsubscribe(powerPlant);
             return Ok();
         }
@@ -79,6 +79,10 @@ namespace ElectricityProviderApi.Controllers
         public IActionResult FindCheapestElectricityProvider(Address address)
         {
             var cheapest = _electricProviderPicker.FindCheapest(address);
+            if (cheapest.Name == null)
+            {
+                return NotFound($"Cheapest electric provider for {address.Country} {address.City} {address.Street} was not found");
+            }
             return Ok(cheapest);
         }
     }
