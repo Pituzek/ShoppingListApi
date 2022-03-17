@@ -4,6 +4,7 @@ using ElectricityProviderApi.Controllers;
 using ElectricityProviderApi.Services;
 using ElectricityProviderApi.Models;
 using System.Collections.Generic;
+using ElectricProvider = ElectricityProviderApi.Services;
 
 namespace ElectricityProvider.Tests
 {
@@ -18,8 +19,8 @@ namespace ElectricityProvider.Tests
         [Theory]
         [MemberData(nameof(ExpectedCheapestProvider))]
         public void FindCheapest_ReturnProviderWithLowestPrice(
-            ElectricityProviderApi.Services.ElectricityProvider firstProvider,
-            ElectricityProviderApi.Services.ElectricityProvider secondProvider,
+            ElectricProvider.ElectricityProvider firstProvider,
+            ElectricProvider.ElectricityProvider secondProvider,
             Address address)
         {
             ElectricProviderPicker providerPicker = new ElectricProviderPicker();
@@ -34,16 +35,16 @@ namespace ElectricityProvider.Tests
         [Theory]
         [MemberData(nameof(ExpectedElectricProviders))]
         public void Get_ReturnListOfElectricityProviders(
-            ElectricityProviderApi.Services.ElectricityProvider firstProvider,
-            ElectricityProviderApi.Services.ElectricityProvider secondProvider)
+            ElectricProvider.ElectricityProvider firstProvider,
+            ElectricProvider.ElectricityProvider secondProvider)
         {
             // Arrange
             ElectricProviderPicker providerPicker = new ElectricProviderPicker();
             providerPicker.add(firstProvider);
             providerPicker.add(secondProvider);
 
-            List<ElectricityProviderApi.Services.ElectricityProvider> expected
-                = new List<ElectricityProviderApi.Services.ElectricityProvider>() { firstProvider, secondProvider };
+            List<ElectricProvider.ElectricityProvider> expected
+                = new List<ElectricProvider.ElectricityProvider>() { firstProvider, secondProvider };
 
             // Act
             var collection = providerPicker.Get();
@@ -59,8 +60,8 @@ namespace ElectricityProvider.Tests
         [InlineData(" cZarnobyL")]
         public void FindByName_ReturnElectricityProvider(string electricityProviderName)
         {
-            ElectricityProviderApi.Services.ElectricityProvider provider =
-                new ElectricityProviderApi.Services.ElectricityProvider() { Name = "czarnobyl" };
+            ElectricProvider.ElectricityProvider provider =
+                new ElectricProvider.ElectricityProvider() { Name = "czarnobyl" };
             ElectricProviderPicker providerPicker = new ElectricProviderPicker();
             providerPicker.add(provider);
 
@@ -74,8 +75,8 @@ namespace ElectricityProvider.Tests
             get
             {
                 yield return new object[] {
-                        new ElectricityProviderApi.Services.ElectricityProvider() { Name = "czarnobyl"},
-                        new ElectricityProviderApi.Services.ElectricityProvider() { Name = "enea" }
+                        new ElectricProvider.ElectricityProvider() { Name = "czarnobyl"},
+                        new ElectricProvider.ElectricityProvider() { Name = "enea" }
                 };
 
             }
@@ -86,7 +87,7 @@ namespace ElectricityProvider.Tests
             get
             {
                 yield return new object[] {
-                        new ElectricityProviderApi.Services.ElectricityProvider() {
+                        new ElectricProvider.ElectricityProvider() {
                             Name = "czarnobyl",
                             _powerPlantList = {
                                                 new PowerPlant() {
@@ -102,7 +103,7 @@ namespace ElectricityProvider.Tests
                             }
 
                         },
-                        new ElectricityProviderApi.Services.ElectricityProvider() { 
+                        new ElectricProvider.ElectricityProvider() { 
                             Name = "enea",
                             _powerPlantList = {
                                                 new PowerPlant() {

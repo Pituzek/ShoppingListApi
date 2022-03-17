@@ -8,6 +8,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using Xunit;
+using ElectricProvider = ElectricityProviderApi.Services;
 
 namespace ElectricityProvider.Tests
 {
@@ -20,9 +21,9 @@ namespace ElectricityProvider.Tests
 
         public ElectricityProviderControllerTest()
         {
-            _electricityProvider = new ElectricityProviderApi.Services.ElectricityProvider() { Name = "ProviderName" };
+            _electricityProvider = new ElectricProvider.ElectricityProvider() { Name = "ProviderName" };
             _electricProviderPicker = new ElectricProviderPicker();
-            _electricProviderPicker.add((ElectricityProviderApi.Services.ElectricityProvider)_electricityProvider);
+            _electricProviderPicker.add((ElectricProvider.ElectricityProvider)_electricityProvider);
 
             _controller = new ElectricityProviderController(_electricityProvider, _electricProviderPicker);
         }
@@ -30,7 +31,7 @@ namespace ElectricityProvider.Tests
         [Fact]
         public void CreateElectricityProvider_WhenCreatingElectricityProvider_ReturnsCreated()
         {
-            var response = _controller.CreateElectricityProvider(new ElectricityProviderApi.Services.ElectricityProvider());
+            var response = _controller.CreateElectricityProvider(new ElectricProvider.ElectricityProvider());
 
             Assert.IsAssignableFrom<CreatedResult>(response);
         }

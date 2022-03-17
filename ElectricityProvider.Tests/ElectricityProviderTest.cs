@@ -8,6 +8,7 @@ using ElectricityProviderApi.Services;
 using ElectricityProviderApi.Models;
 using System.Collections.Generic;
 using System.Reflection;
+using ElectricProvider = ElectricityProviderApi.Services;
 
 namespace ElectricityProvider.Tests
 {
@@ -63,9 +64,9 @@ namespace ElectricityProvider.Tests
             var provider = BuildProvider();
             int precision = 2;
 
-            var value = typeof(ElectricityProviderApi.Services.ElectricityProvider)
+            var value = typeof(ElectricProvider.ElectricityProvider)
                 .GetMethod("CalculateDistance", BindingFlags.NonPublic | BindingFlags.Instance)
-                .Invoke(new ElectricityProviderApi.Services.ElectricityProvider(), new object[] { currentPos, destination});
+                .Invoke(new ElectricProvider.ElectricityProvider(), new object[] { currentPos, destination});
             decimal distanceFromMethod = (decimal)value;
             
             Assert.Equal(expected, distanceFromMethod, 2);
@@ -84,11 +85,11 @@ namespace ElectricityProvider.Tests
             }
         }
 
-        private ElectricityProviderApi.Services.ElectricityProvider BuildProviderWithPowerPlant() => new ElectricityProviderApi.Services.ElectricityProvider() { _powerPlantList = { BuildPowerPlant() } };
+        private ElectricProvider.ElectricityProvider BuildProviderWithPowerPlant() => new ElectricProvider.ElectricityProvider() { _powerPlantList = { BuildPowerPlant() } };
 
         private PowerPlant BuildPowerPlant() => new PowerPlant() { Name = "test" };
 
-        private ElectricityProviderApi.Services.ElectricityProvider BuildProvider() => new ElectricityProviderApi.Services.ElectricityProvider() { Name = "Enea" };
+        private ElectricProvider.ElectricityProvider BuildProvider() => new ElectricProvider.ElectricityProvider() { Name = "Enea" };
 
         public static IEnumerable<object[]> CalculatePriceData
         {
