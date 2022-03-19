@@ -1,3 +1,4 @@
+using ElectricityProviderApi.Db;
 using ElectricityProviderApi.Services;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
@@ -36,6 +37,8 @@ namespace ElectricityProviderApi
 
             services.AddSingleton<IElectricityProvider, ElectricityProvider>();
             services.AddSingleton<IElectricProviderPicker, ElectricProviderPicker>();
+
+            services.AddDbContext<ElectricProvidersContext>();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
