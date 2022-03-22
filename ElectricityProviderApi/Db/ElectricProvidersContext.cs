@@ -1,6 +1,4 @@
-﻿using ElectricityProviderApi.Models;
-using Domain = ElectricityProviderApi.Services;
-using Microsoft.EntityFrameworkCore;
+﻿using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -10,9 +8,10 @@ namespace ElectricityProviderApi.Db
 {
     public class ElectricProvidersContext : DbContext
     {
-        public DbSet<Domain.ElectricityProvider> ElectricityProviders { get; set; }
+        // tylko i wylacznie modele z folderu Db!
+        public DbSet<ElectricityProvider> ElectricityProviders { get; set; }
         public DbSet<PowerPlant> PowerPlants { get; set; }
-        public DbSet<Domain.ElectricProviderPicker> ElectricProviderPicker { get; set; }
+        public DbSet<ElectricProviderPicker> ElectricProviderPicker { get; set; }
 
         public ElectricProvidersContext(DbContextOptions<ElectricProvidersContext> options)
         {

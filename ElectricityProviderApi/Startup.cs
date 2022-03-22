@@ -35,7 +35,7 @@ namespace ElectricityProviderApi
                 c.SwaggerDoc("v1", new OpenApiInfo { Title = "ElectricityProviderApi", Version = "v1" });
             });
 
-            services.AddSingleton<IElectricityProvider, ElectricityProvider>();
+            services.AddSingleton<IElectricityProvider, Services.ElectricityProvider>();
             services.AddSingleton<IElectricProviderPicker, ElectricProviderPicker>();
 
             services.AddDbContext<ElectricProvidersContext>();

@@ -1,4 +1,5 @@
 ﻿using ElectricityProviderApi.Models;
+using ElectricityProviderApi.Repositories;
 using System.Collections.Generic;
 
 namespace ElectricityProviderApi.Services
@@ -14,6 +15,12 @@ namespace ElectricityProviderApi.Services
     public class ElectricProviderPicker : IElectricProviderPicker
     {
         private List<ElectricityProvider> _electricityProvidersList = new List<ElectricityProvider>();
+        private readonly ElectricProvidersRepository _repository;
+
+        public ElectricProviderPicker(ElectricProvidersRepository repository)
+        {
+            _repository = repository;
+        }
 
         public void add(ElectricityProvider electricityProvider)
         {
@@ -23,7 +30,7 @@ namespace ElectricityProviderApi.Services
         public ElectricityProvider FindCheapest(Address address)
         {
             decimal max = decimal.MaxValue;
-            ElectricityProvider cheapestProvider = new ElectricityProvider();
+            ElectricityProvider cheapestProvider = new ElectricityProvider(null);
 
             foreach (var provider in _electricityProvidersList)
             {

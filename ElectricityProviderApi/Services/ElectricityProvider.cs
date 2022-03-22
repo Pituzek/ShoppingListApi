@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using ElectricityProviderApi.Models;
+using ElectricityProviderApi.Repositories;
 
 namespace ElectricityProviderApi.Services
 {
@@ -16,7 +17,14 @@ namespace ElectricityProviderApi.Services
     public class ElectricityProvider : IElectricityProvider
     {
         public string Name { get; set; }
-        public List<PowerPlant> _powerPlantList { get; } = new List<PowerPlant>();
+        public List<PowerPlant> _powerPlantList { get; set; } = new List<PowerPlant>();
+
+        private readonly PowerPlantRepository _repository;
+
+        public ElectricityProvider(PowerPlantRepository repository)
+        {
+            _repository = repository;
+        }
 
         /// <summary>
         /// Calculate cost based on distance between provider location, and customer address

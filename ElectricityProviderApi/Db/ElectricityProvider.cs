@@ -8,6 +8,6 @@ namespace ElectricityProviderApi.Db
     public class ElectricityProvider
     {
         public string Name { get; set; }
-        public List<PowerPlant> _powerPlantList { get; set; }
+        public ICollection<PowerPlant> _powerPlantList { get; set; } = new List<PowerPlant>();
     }
 }
