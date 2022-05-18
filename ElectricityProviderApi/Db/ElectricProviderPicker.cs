@@ -7,6 +7,7 @@ namespace ElectricityProviderApi.Db
 {
     public class ElectricProviderPicker
     {
+        public int Id { get; set; }
         public ICollection<ElectricityProvider> ElectricityProvider { get; set; }
     }
 }

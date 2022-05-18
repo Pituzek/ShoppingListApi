@@ -8,6 +8,7 @@ namespace ElectricityProviderApi.Db
 {
     public class PowerPlant
     {
+        public int Id { get; set; }
         public string Name { get; set; }
         public Location Location { get; set; }
         public decimal ElectricityPrice { get; set; }
