@@ -36,7 +36,7 @@ namespace ElectricityProviderApi
             });
 
             services.AddSingleton<IElectricityProvider, Services.ElectricityProvider>();
-            services.AddSingleton<IElectricProviderPicker, ElectricProviderPicker>();
+            services.AddSingleton<IElectricProviderPicker, Services.ElectricProviderPicker>();
 
             services.AddDbContext<ElectricProvidersContext>();
         }
